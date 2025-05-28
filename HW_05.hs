@@ -1,4 +1,3 @@
-import Distribution.Parsec (Position)
 --1
 --[9, 12, 18] :: Num a => [a]
 --"che" ++ ['e', 's', 'e'] ::[Char]
@@ -7,19 +6,19 @@ import Distribution.Parsec (Position)
 --(2000, "Bernd") == (1.1, []) :: Bool
 --[1930, 1950, [1978, 1986, [2022]]]:: (Num a, Num [a], Num [[a]]) => [[[a]]]
 --Error array inhomogen
---[[[1], [2] ++ [3]], [], [[5], [6]]] --ERROR INHOMGENOURS
+--[[[1], [2] ++ [3]], [], [[5], [6]]] :: Num a => [[[a]]]
 --() /= (10, 'M')-> Fehler (unterschiedliche Typen)
 
 ------2
---f::Integral a =>a->a
+--f::Integral a =>a->a -- da Integral erbt von Eq 
 --f 0 = 1
 --f n = n * f (n - 1)
 
 
---f::Integral a => [a]->[a]
+--f::Integral a => [a]->[a] ----mod relevant für Klausur, Integral
 -- f x = [y | y <- x, y `mod` 2 == 0]
 
---f::(Ord x, Eq y) =>x->y->()->()
+--f::(Ord x, Eq y) =>x->y->()->() -----succ :: Enum a => a -> a
 --f :: (Ord a, Enum a) => a -> a -> () -> ()
 --f x y z = if succ x < y then z else ()
 
@@ -27,10 +26,10 @@ import Distribution.Parsec (Position)
 -- f x y = (read x, show y)
 
 ---3
-data DomFoot = LeftF | RightF deriving Show
+data DomFoot = LeftF | RightF deriving (Show, Eq)
 data PPosition = Goalkeeper | Defender | Midfielder | Forward deriving (Show, Eq)
 
-data Player = Constr String String Integer DomFoot PPosition deriving Show
+data Player = Constr String String Integer DomFoot PPosition deriving (Show, Eq)
 
 p1 = Constr "Messi" "FC Barcelona" 11 LeftF Forward
 p2 = Constr "Ronaldo" "FC Barcelona" 121 LeftF Midfielder
