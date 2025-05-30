@@ -87,3 +87,18 @@ myLess first second = myHead first < myHead second
 length' :: [a] -> Int
 --length' arr = foldl (\ acc x -> acc+1) 0 arr 
 length' = foldl (\ acc x -> acc+1) 0
+
+any' :: (a -> Bool) -> [a] -> Bool
+any' f = foldl (\acc x-> f x || acc) False
+
+maximum' :: (Ord a) => [a] -> a
+maximum' [] = error "Empty List"
+maximum' arr = foldl (\acc x -> if x>acc then x else acc) (head arr) arr
+
+maximum'' :: (Ord a) => [a] -> a
+maximum'' [] = error "Empty List"
+maximum'' arr = foldr (\x acc-> if x>acc then x else acc) (head arr) arr
+
+unzip':: [(a, b)] -> ([a], [b])
+unzip' = foldl (\(x,y) (f,s) -> (x++[f], y++[s])) ([],[]) --first is acc and next is x
+--unzip' tArr = foldl (\(x,y) (f,s) -> (x++[f], y++[s])) ([],[]) tArr
