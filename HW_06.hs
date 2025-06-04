@@ -1,4 +1,4 @@
--------------1
+-------------1---Klausurrelevant:
 data Astronaut = Astronaut {benutzername :: String, rolle::Rolle,
  zustand::Zustand, aufgaben::[String], farbe::Farben} deriving (Ord)
 
@@ -22,7 +22,8 @@ instance Eq Farben where
 
 instance Eq Astronaut where
     (==):: Astronaut->Astronaut->Bool
-    (Astronaut {benutzername = b1, farbe = f1}) == (Astronaut {benutzername = b2, farbe = f2})
+    (Astronaut {benutzername = b1, farbe = f1}) ==
+         (Astronaut {benutzername = b2, farbe = f2})
      = b1 == b2 && f2 ==f1
 
 instance Show Farben where
@@ -36,12 +37,13 @@ instance Show Farben where
 instance Show Astronaut where
     show :: Astronaut -> String
     show (Astronaut {benutzername = b, farbe = f}) = b ++ ( ':' : show f)
-
+--show a = benutzername a ++ (':' show (farbe a))
 istCrewmate:: Astronaut -> Bool
 istCrewmate (Astronaut {rolle = r}) = r == Crewmate
-
+--istCrewmate = (crewmate ==) . rolle  
 istImpostor:: Astronaut -> Bool
 istImpostor x = not (istCrewmate x)
+--istImpostor= not . istCrewmate
 
 istLebendig:: Astronaut -> Bool
 istLebendig (Astronaut {zustand = z}) = z==Lebendig
@@ -54,27 +56,26 @@ istTot x = not (istLebendig x)
 data ML a = E | L a (ML a) deriving Show
 
 oneToFour :: ML Integer
-oneToFour= L 1 (L 2 (L 3 (L 4 E)))
+oneToFour= L 1 (L 2 (L 3 (L 4 E)))-- klausurrelevant
 test :: ML Integer
 test=      L 1 (L 2 (L 3 (L 4 (L 999 E))))
 
 myHead::ML a-> a
 myHead E = error "Empty List"
-myHead (L x xs )= x
+myHead (L x _ )= x
 
 myAppend:: ML a -> ML a -> ML a
-myAppend E E = E
-myAppend E (L x xs) = L x (myAppend E xs)
+myAppend E ys = ys
 myAppend (L x xs) b = L x (myAppend xs b)
 
 myAdd ::Num a=> ML a -> ML a -> ML a
-myAdd E x = E
-myAdd x E = E
+myAdd E _ = E
+myAdd _ E = E
 myAdd (L x xs) (L y ys) = L (y+x) (myAdd xs ys)
 
 myString::Show a=>ML a -> String
 myString E = ""
-myString (L x E)= show x
+myString (L x E) = show x
 myString (L x xs)= show x ++ (',': myString xs)
 
 
@@ -83,13 +84,22 @@ myLess _ E= False
 myLess E _= True
 myLess first second = myHead first < myHead second
 
------------------3
+--or
+myLess2 :: Ord a => ML a -> ML a -> Bool
+myLess2 _ E = False
+myLess2 E _ = True
+myLess2 (L x xs) (L y ys) | x<y = True
+                        | x>y = False
+                        | otherwise = xs `myLess2` ys
+-----------------3----Kommt in der Klausur!!!!!!!!10000%
+--foldr efficienter; foldl kann auf unendliche Listen angewendet werden
 length' :: [a] -> Int
 --length' arr = foldl (\ acc x -> acc+1) 0 arr 
 length' = foldl (\ acc x -> acc+1) 0
 
 any' :: (a -> Bool) -> [a] -> Bool
 any' f = foldl (\acc x-> f x || acc) False
+--oder any'' f = foldr ( (||) . f) False
 
 maximum' :: (Ord a) => [a] -> a
 maximum' [] = error "Empty List"
