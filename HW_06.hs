@@ -112,3 +112,4 @@ maximum'' arr = foldr (\x acc-> if x>acc then x else acc) (head arr) arr
 unzip':: [(a, b)] -> ([a], [b])
 unzip' = foldl (\(x,y) (f,s) -> (x++[f], y++[s])) ([],[]) --first is acc and next is x
 --unzip' tArr = foldl (\(x,y) (f,s) -> (x++[f], y++[s])) ([],[]) tArr
+--unzip' tArr = foldr (\ (f,s) (x,y) -> (f:x, s:y)) ([],[]) tArr
