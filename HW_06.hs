@@ -1,4 +1,4 @@
----1
+-------------1
 data Astronaut = Astronaut {benutzername :: String, rolle::Rolle,
  zustand::Zustand, aufgaben::[String], farbe::Farben} deriving (Ord)
 
@@ -83,7 +83,7 @@ myLess _ E= False
 myLess E _= True
 myLess first second = myHead first < myHead second
 
--------------3
+-----------------3
 length' :: [a] -> Int
 --length' arr = foldl (\ acc x -> acc+1) 0 arr 
 length' = foldl (\ acc x -> acc+1) 0
