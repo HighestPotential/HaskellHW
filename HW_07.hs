@@ -12,6 +12,8 @@ elem'r x = foldr (\y acc -> (y==x && not acc) || acc) False
 all' :: (a -> Bool) -> [a] -> Bool
 all' f  = foldl (\acc x -> f x  && acc ) True
 
+--all'' f = foldr (&& . f) True
+
 reverse' :: [a] -> [a]
 reverse'  = foldr (\x acc-> acc ++ [x]) []
 
@@ -41,7 +43,8 @@ foo4  = sqrt . (5 *). sum . flip take [1..50]
 
 foo5 :: [Char] -> [Char]
 foo5  = (++ "River") . flip (++) "Plate" . (:[]) . head
--- foo (x:_) = "River" ++ [x] ++ "Plate"
+
+-- foo (x:_) = "River" ++ [x] ++ "Plate" 
 
 -----------3
 funa:: Integer
