@@ -59,3 +59,5 @@ chain n | even n = n : chain (n `div` 2)
 funb::Int
 funb = length $ filter (\ arr -> length arr > 15) [ chain res | res <- [1..100]]
 --length legth filter [list Comprehension]
+
+--https://claude.ai/public/artifacts/39b0150e-f083-4f05-959a-7fffdf496faa
