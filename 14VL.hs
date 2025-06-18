@@ -1,5 +1,7 @@
 import Data.Char
 
+import System.IO 
+
 main :: IO ()
 main = interact processInput
     where
@@ -41,3 +43,10 @@ aktion2 = putStrLn "Welt"
 
 main' :: IO ()
 main' = aktion1 >> aktion2
+
+
+readFileFunk= do 
+    withFile "io.txt" ReadMode (\h-> do
+        content <- hGetContents h 
+        putStr content)
+    putStrLn "Finshed"
