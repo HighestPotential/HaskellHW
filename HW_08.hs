@@ -8,8 +8,7 @@ import Language.Haskell.TH (Lit(IntegerL))
 data ComplexNumbers = C (Double, Double)
 
 instance Semigroup ComplexNumbers where
-        C (0, 0) <> C (_, _) = C (0, 0)
-        C (_, _) <> C (0, 0) = C (0, 0)
+        (<>) :: ComplexNumbers -> ComplexNumbers -> ComplexNumbers
         C (a, b) <> C (x, y) = C (a*x - b*y, b*x + a*y)
 
 
@@ -21,7 +20,9 @@ instance Monoid ComplexNumbers where
 
 instance Show ComplexNumbers where
     show :: ComplexNumbers -> String
-    show  (C (x, y)) = show x ++ " + " ++ show y ++ "i"
+    show  (C (x, y)) = show x ++ signChar ++ show (abs y) ++ "i"
+        where signChar = if y<0 then " - " else " + "
+
 
 
 -- b)
@@ -57,6 +58,9 @@ op _ _ = 0
 
 --b)
 {-Es erfüllt die assoziativität und hat ein neutrales element, er ist: 1
+0 x 1 =0
+1x0=0
+1x1=1
 
 Assoziativität:
 Sei a, b, c element {0,1} 
@@ -67,7 +71,7 @@ newtype XOR = XOR Int deriving Show
 
 instance Semigroup XOR where
     (<>) :: XOR -> XOR -> XOR
-    XOR 1 <> XOR 1 =XOR 1
+    XOR 1 <> XOR 1 =XOR 1--oder einfach (<>)= op
     XOR 0 <> XOR 0 =XOR 1
     XOR _ <> XOR _ =XOR 0
 
@@ -101,12 +105,12 @@ ttrd (Triple _ _ x ) = x
 x :: Num a => Triple a -> Triple a -> Triple a
 x (Triple a b c) (Triple d e f) = Triple (b*f - c*e) (c*d - a*f) (a*e -b*d)  
 
-
 --d
 instance Functor Triple where
     fmap :: (a -> b) -> Triple a -> Triple b
     fmap f (Triple a b c) = Triple (f a) (f b) (f c)
-    
+
 scaMult :: Num a => a -> Triple a -> Triple a
 scaMult s = fmap (* s) 
 --scaMult s triple = fmap (* s) triple
+--scaMult = fmap . (*)
