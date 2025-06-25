@@ -1,3 +1,4 @@
+import Data.Void (vacuous)
 data BinTree a = Empty | Node a (BinTree a) (BinTree a) deriving Show
 leaf :: a -> BinTree a
 leaf x = Node x Empty Empty
@@ -129,3 +130,17 @@ simplify (BinTerm Minus t@(UnTerm x) (UnTerm (Negate (C b))))=
 simplify (BinTerm x a b) = BinTerm x (simplify a) (simplify b)
 
 simplify (UnTerm x) = UnTerm x
+
+
+---Loesung für 2 in der Übung:
+--d
+---(-n)=n
+
+simplify'(Unterm Negate (Unterm Negate t)) =simplify t
+simplify' (Binterm Plus t1 (UnTerm Negate t2)) = simplify (BinTerm Plus t1 t2)
+simplify' (Binterm Plus t1 (UnTerm Negate t2)) = simplify (BinTerm Plus t1 t2)
+simplify' (UnTerm op t) = Unterm op (simplify' t)
+simplify' (C v) = C v
+
+
+
