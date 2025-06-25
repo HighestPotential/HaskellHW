@@ -67,7 +67,7 @@ Sei a, b, c element {0,1}
 a # b # c()-}
 
 --c)
-newtype XOR = XOR Int deriving Show
+newtype XOR = XOR Int deriving Show --es ist nicht XOR es ist AND
 
 instance Semigroup XOR where
     (<>) :: XOR -> XOR -> XOR
