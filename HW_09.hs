@@ -19,11 +19,10 @@ leaves (Node x l r) = leaves l + leaves r
 --binarySearch
 search :: Ord a => a -> BinTree a -> Bool
 search toS Empty = False
-search toS (Node x Empty Empty) |toS==x = True
-                                |otherwise = False
 search toS (Node x l r) | toS==x = True
                          | toS<x = search toS l
                          |otherwise = search toS r
+
 
 -- t3 = Node 10
 --            (Node 5
