@@ -1,6 +1,6 @@
 import System.IO
 import Data.Char
-import System.Process.Internals (translate)
+
 
 --Aufgabe 1
 --a
