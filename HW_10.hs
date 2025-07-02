@@ -48,8 +48,6 @@ changeName name (word:xs) | word == "Macarena" = name : changeName name xs
                             | otherwise         = word : changeName name xs
 
 
-
-
 main3 :: IO ()
 main3 = withFile "one-hit-wonder.txt" ReadMode (\ xs ->
     do
@@ -68,7 +66,7 @@ main3 = withFile "one-hit-wonder.txt" ReadMode (\ xs ->
                 where
                     makeLower [] = ""
                     makeLower [x] = [toLower x]
-                    makeLower (x:xs) = toLower x : (makeLower xs)
+                    makeLower (x:xs) = toLower x : makeLower xs
             "laut"-> putStr (makeUpper newNameContent)
                 where
                     makeUpper [] = ""
@@ -94,7 +92,7 @@ main4 = do
                 ++ "'" ++ bWord ++"'")
             -- appendFile "woerterbuch.txt" ("(\"" ++ dWord 
             --     ++ "\"," ++ "\"" ++bWord ++ "\") \n")
-            addToDict dWord bWord
+            addToDict dWord bWord--nur für 
             main4
     else
         do
