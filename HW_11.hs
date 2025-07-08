@@ -105,3 +105,4 @@ instance Monad Box where
     (Empty msg) >>= f = Empty msg
 
 --Ask about the  "(>>=) :: Box a -> (a -> Box b) -> Box b" will they be asked in Klausur???
+--Singnatur
