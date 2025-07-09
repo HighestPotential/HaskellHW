@@ -1,5 +1,7 @@
 --1
 --a
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Redundant return" #-}
 data Liste a = Nil | Cons a (Liste a) deriving (Show)
 
 --b
@@ -11,9 +13,8 @@ instance Functor Liste where
     fmap f (Cons x xs)= Cons (f x) (fmap f xs)
 
 
-
 negateFunctor :: (Functor f, Num b) => f b -> f b
-negateFunctor x = fmap negate x
+negateFunctor xs = fmap negate xs
 
 --c
 instance Applicative Liste where
@@ -22,7 +23,7 @@ instance Applicative Liste where
     _ <*> _ = Nil
 
     pure :: a -> Liste a
-    pure el = Cons el Nil
+    pure el = Cons el (pure el)
 
 
 --2
@@ -35,12 +36,16 @@ type Account = (Debit, Credit)  --shulden, guthaben
 --b
 withdraw :: Money -> Account -> Maybe Account
 withdraw amount (shulden, guthaben)
-    |(shulden+amount) <= guthaben = Just (shulden+amount , guthaben)
+    |(shulden+amount) <= guthaben = Just (shulden + amount , guthaben)
+    |amount<0 = Nothing
     |otherwise = Nothing
 
 deposit :: Money -> Account -> Maybe Account
-deposit amount (shulden, guthaben) = Just (shulden , guthaben+amount)
+deposit amount (shulden, guthaben)
+    |amount<0 = Nothing
+    |otherwise= Just (shulden , guthaben+amount)
 
+--c
 doTests :: Account -> Maybe Account
 doTests acount = do
     afterTest1 <- deposit 150 acount
@@ -60,7 +65,7 @@ doTests2 acount = do
     return afterTest5
 
 
---c
+--d
 doTests' :: Account -> Maybe Account
 doTests' acount = (deposit 150 acount) >>= (\ac1 ->
     (withdraw 100 ac1) >>= (\ac2 ->
@@ -74,7 +79,7 @@ type Balance = Money
 accountState :: Account -> Maybe Balance
 accountState (shulden, guthaben)
     | shulden > guthaben = Nothing
-    | otherwise = pure (guthaben-shulden)
+    | otherwise = pure (guthaben-shulden) -- oder statt pure einfach Just
 
 
 unpure :: (Num a, Num b) => Maybe (a, b) -> (a, b)
@@ -83,13 +88,15 @@ unpure _= (-10000000000000000000,-100000000000000)
 
 --3
 --a
-data Box a= Empty String | Full a deriving Show
+data Box a = Empty String | Full a deriving Show
 
+--b
 instance Functor Box where
     fmap :: (a -> b) -> Box a -> Box b
     fmap f (Full a) = Full (f a)
     fmap f (Empty msg) = Empty msg
 
+--c
 instance Applicative Box where
   (<*>) :: Box (a -> b) -> Box a -> Box b
   (Full f) <*> (Full x) = Full (f x)
@@ -99,10 +106,13 @@ instance Applicative Box where
   pure :: a -> Box a
   pure = Full
 
+--d
 instance Monad Box where
     (>>=) :: Box a -> (a -> Box b) -> Box b
     (Full el) >>= f = f el
     (Empty msg) >>= f = Empty msg
 
+    return :: a -> Box a
+    return=pure
 --Ask about the  "(>>=) :: Box a -> (a -> Box b) -> Box b" will they be asked in Klausur???
 --Singnatur
