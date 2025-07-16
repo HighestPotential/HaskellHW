@@ -16,10 +16,11 @@ chainAction2 el (f:xs) = let changed = f el in
     changed >>= (\takenOut -> chainAction2 takenOut xs)
 chainAction2 el [] = return el
 
+--chainaction2 a1 (h:t) = h a1 >>= (\a2 -> chainaction2 a2 t)-- alternative to first line
 
 chainAction3 :: Monad m => a -> [(a -> m a)] -> m a
 chainAction3 el (f:xs) =  undefined ------WWWWWWWWWWWWWWWWWWWWWWWWWWWWWTTTTTTTTT
-
+--chainrecation3 = foldM (\acc f -> f acc)
 
 tellOp :: (Show a, Show b) => (a -> b) -> a -> IO b
 tellOp f x = let fx = f x in do
